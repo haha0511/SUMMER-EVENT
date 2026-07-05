@@ -5,10 +5,9 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>상점</title>
+    <title>Summer Event - 상점</title>
 
     <link rel="stylesheet" href="shop.css">
 
@@ -19,169 +18,131 @@
 <div id="shopArea">
 
     <!-- 배경 -->
-
     <img
+        src="../image/background.png"
         id="background"
-        src="../image/beach.png"
         draggable="false"
     >
 
     <!-- 상단 -->
-
     <div id="topBar">
 
         <button id="homeButton">
-
             🏠 홈
-
         </button>
 
         <div id="title">
-
             🛒 상점
-
         </div>
 
         <div id="shellBox">
-
-            🐚
-            <span id="shellPoint">
-
-                0
-
-            </span>
-
+            🐚 <span id="shellPoint">0</span>
         </div>
 
     </div>
 
-    <!-- 상점 목록 -->
-
+    <!-- 상품 목록 -->
     <div id="shopGrid">
 
         <!-- 삽 -->
-
         <div class="item">
 
             <div class="emoji">
-
                 ⛏️
-
             </div>
 
             <div class="name">
-
-                삽 묶음
-
+                삽 x4
             </div>
 
             <div class="description">
-
-                삽 +4개
-
+                모래를 팔 수 있는 삽 4개
             </div>
 
             <div class="price">
-
-                🐚 500
-
+                🐚 100
             </div>
 
             <button
                 class="buyButton"
-                data-item="shovel"
-                data-price="500"
-            >
-
+                id="buyShovel">
                 구매
-
             </button>
 
         </div>
 
-        <!-- (추후 추가 예정) -->
-
+        <!-- 준비중 -->
         <div class="item disabled">
 
             <div class="emoji">
-
-                💣
-
+                🎁
             </div>
 
             <div class="name">
-
-                폭탄 삽
-
+                준비중
             </div>
 
             <div class="description">
-
-                준비 중
-
+                곧 추가됩니다.
             </div>
 
             <div class="price">
-
-                Coming Soon
-
+                -
             </div>
+
+            <button class="buyButton">
+                준비중
+            </button>
 
         </div>
 
+        <!-- 준비중 -->
         <div class="item disabled">
 
             <div class="emoji">
-
-                🍀
-
+                ⭐
             </div>
 
             <div class="name">
-
-                럭키 부적
-
+                준비중
             </div>
 
             <div class="description">
-
-                준비 중
-
+                곧 추가됩니다.
             </div>
 
             <div class="price">
-
-                Coming Soon
-
+                -
             </div>
+
+            <button class="buyButton">
+                준비중
+            </button>
 
         </div>
 
+        <!-- 준비중 -->
         <div class="item disabled">
 
             <div class="emoji">
-
-                📦
-
+                👑
             </div>
 
             <div class="name">
-
-                특별 상자
-
+                준비중
             </div>
 
             <div class="description">
-
-                준비 중
-
+                곧 추가됩니다.
             </div>
 
             <div class="price">
-
-                Coming Soon
-
+                -
             </div>
+
+            <button class="buyButton">
+                준비중
+            </button>
 
         </div>
 
