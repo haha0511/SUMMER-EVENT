@@ -3,8 +3,22 @@
 // script.js
 // =============================
 
+// -----------------------
+// 로그인 확인
+// -----------------------
+
+const loginUser = localStorage.getItem("loginUser");
+
+if(loginUser === null){
+
+    location.href = "login.html";
+
+}
+
 // 조개 포인트 불러오기
 let shellPoint = localStorage.getItem("shellPoint");
+
+
 
 if (shellPoint === null) {
     shellPoint = 0;
