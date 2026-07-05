@@ -5,7 +5,8 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
     <title>모래 파기 게임</title>
 
@@ -19,8 +20,8 @@
 
     <!-- 배경 -->
     <img
+        src="../image/background.png"
         id="background"
-        src="../image/beach.png"
         draggable="false"
     >
 
@@ -41,66 +42,49 @@
 
     </div>
 
-    <!-- 남은 삽 -->
+    <!-- 삽 -->
     <div id="digCount">
-
-        ⛏ 남은 삽 :
-        <span id="remainDig">10</span>
-
+        ⛏️ <span id="remainDig">10</span>
     </div>
 
-    <!-- 모래 영역 -->
+    <!-- 클릭 영역 -->
     <div id="sandArea"></div>
 
     <!-- 파는 중 -->
-    <div
-        id="loadingScreen"
-        class="hidden"
-    >
+    <div id="loadingScreen" class="hidden">
 
         <div id="loadingText">
-
-            ⛏ 모래를 파는 중...
-
+            파는 중...
         </div>
 
         <div id="countDown">
-
             3
-
         </div>
 
     </div>
 
     <!-- 보상창 -->
-    <div
-        id="rewardScreen"
-        class="hidden"
-    >
+    <div id="rewardScreen" class="hidden">
 
-        <div id="rewardEmoji">
+        <div id="rewardBox">
 
-            ❔
+            <div id="rewardEmoji">
+                🦪
+            </div>
+
+            <div id="rewardTitle">
+                진주가 등장했습니다!
+            </div>
+
+            <div id="rewardPoint">
+                +500 🐚
+            </div>
+
+            <button id="rewardButton">
+                확인
+            </button>
 
         </div>
-
-        <div id="rewardTitle">
-
-            ???
-
-        </div>
-
-        <div id="rewardPoint">
-
-            +0 🐚
-
-        </div>
-
-        <button id="rewardButton">
-
-            확인
-
-        </button>
 
     </div>
 
