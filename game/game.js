@@ -1,64 +1,47 @@
 // =======================
 // Summer Event Game
-// game.js (1/2)
+// game.js
 // =======================
 
+import {
+    db,
+    doc,
+    getDoc,
+    updateDoc
+} from "../firebase.js";
+
 // -----------------------
-// 조개 포인트
+// 로그인 확인
 // -----------------------
 
-let shellPoint = Number(localStorage.getItem("shellPoint"));
+const loginUser = localStorage.getItem("loginUser");
 
-if (isNaN(shellPoint)) {
+if (!loginUser) {
 
-    shellPoint = 0;
-
-    localStorage.setItem("shellPoint", shellPoint);
+    location.href = "../login.html";
 
 }
 
 // -----------------------
-// 삽 개수
+// 변수
 // -----------------------
 
-let remainDig = Number(localStorage.getItem("remainDig"));
+let shellPoint = 0;
 
-if (isNaN(remainDig)) {
+let remainDig = 10;
 
-    remainDig = 10;
+let totalDig = 0;
 
-    localStorage.setItem("remainDig", remainDig);
-
-}
+let isDigging = false;
 
 // -----------------------
-// 하루마다 삽 지급
+// 오늘 날짜
 // -----------------------
 
 const today = new Date().toISOString().slice(0,10);
 
-const lastLogin = localStorage.getItem("lastLogin");
-
-if(lastLogin !== today){
-
-    if(lastLogin !== null){
-
-        remainDig += 10;
-
-        alert("🎁 새로운 하루!\n\n⛏️ 삽 10개 지급!");
-
-    }
-
-    localStorage.setItem("lastLogin",today);
-
-    localStorage.setItem("remainDig",remainDig);
-
-}
-
 // -----------------------
-
-let isDigging = false;
-
+// HTML
 // -----------------------
 
 const shellText = document.getElementById("shellPoint");
@@ -83,23 +66,83 @@ const countDown = document.getElementById("countDown");
 
 // -----------------------
 
-shellText.textContent = shellPoint;
-
-remainText.textContent = remainDig;
-
-// -----------------------
-
-document.getElementById("homeButton").onclick = ()=>{
+document.getElementById("homeButton").onclick = () => {
 
     location.href="../index.html";
 
 };
 
 // -----------------------
+// 사용자 정보 불러오기
+// -----------------------
+
+async function loadUser(){
+
+    const userRef = doc(db,"users",loginUser);
+
+    const snap = await getDoc(userRef);
+
+    if(!snap.exists()){
+
+        alert("계정을 찾을 수 없습니다.");
+
+        localStorage.removeItem("loginUser");
+
+        location.href="../login.html";
+
+        return;
+
+    }
+
+    const data = snap.data();
+
+    shellPoint = data.shell ?? 0;
+
+    remainDig = data.dig ?? 10;
+
+    totalDig = data.totalDig ?? 0;
+
+    if(data.lastLogin !== today){
+
+        remainDig += 10;
+
+        await updateDoc(userRef,{
+
+            dig:remainDig,
+
+            lastLogin:today
+
+        });
+
+        alert("🎁 새로운 하루!\n\n⛏️ 삽 10개 지급!");
+
+    }
+
+    refreshUI();
+
+}
+
+// -----------------------
+// 화면 갱신
+// -----------------------
+
+function refreshUI(){
+
+    shellText.textContent = shellPoint;
+
+    remainText.textContent = remainDig;
+
+}
+
+// -----------------------
+
+loadUser();
+
+// -----------------------
 // 보상 목록
 // -----------------------
 
-const rewards=[
+const rewards = [
 
 {
 
@@ -188,18 +231,20 @@ shell:0
 ];
 
 // -----------------------
+// 보상 선택
+// -----------------------
 
 function getReward(){
 
-    let random=Math.random()*100;
+    let random = Math.random() * 100;
 
-    let total=0;
+    let total = 0;
 
     for(const item of rewards){
 
-        total+=item.chance;
+        total += item.chance;
 
-        if(random<=total){
+        if(random <= total){
 
             return item;
 
@@ -207,17 +252,19 @@ function getReward(){
 
     }
 
-    return rewards[rewards.length-1];
+    return rewards[rewards.length - 1];
 
 }
 
 // -----------------------
+// 파기 시작
+// -----------------------
 
-sandArea.onclick=()=>{
+sandArea.onclick = async () => {
 
     if(isDigging) return;
 
-    if(remainDig<=0){
+    if(remainDig <= 0){
 
         alert("⛏️ 삽이 없습니다!\n상점에서 구매해주세요.");
 
@@ -225,27 +272,37 @@ sandArea.onclick=()=>{
 
     }
 
-    isDigging=true;
+    isDigging = true;
 
     remainDig--;
 
-    remainText.textContent=remainDig;
+    refreshUI();
 
-    localStorage.setItem("remainDig",remainDig);
+    await updateDoc(
+
+        doc(db,"users",loginUser),
+
+        {
+
+            dig:remainDig
+
+        }
+
+    );
 
     loadingScreen.classList.remove("hidden");
 
-    let time=3;
+    let time = 3;
 
-    countDown.textContent=time;
+    countDown.textContent = time;
 
-    const timer=setInterval(()=>{
+    const timer = setInterval(()=>{
 
         time--;
 
-        countDown.textContent=time;
+        countDown.textContent = time;
 
-        if(time<=0){
+        if(time <= 0){
 
             clearInterval(timer);
 
@@ -263,7 +320,7 @@ sandArea.onclick=()=>{
 // 보상 표시
 // -----------------------
 
-function showReward(){
+async function showReward(){
 
     const result = getReward();
 
@@ -275,9 +332,25 @@ function showReward(){
 
     shellPoint += result.shell;
 
-    shellText.textContent = shellPoint;
+    totalDig++;
 
-    localStorage.setItem("shellPoint", shellPoint);
+    refreshUI();
+
+    await updateDoc(
+
+        doc(db,"users",loginUser),
+
+        {
+
+            shell:shellPoint,
+
+            dig:remainDig,
+
+            totalDig:totalDig
+
+        }
+
+    );
 
     rewardScreen.classList.remove("hidden");
 
@@ -296,10 +369,10 @@ rewardButton.onclick = () => {
 };
 
 // -----------------------
-// 모바일 터치 지원
+// 모바일 터치
 // -----------------------
 
-sandArea.addEventListener("touchstart", function(e){
+sandArea.addEventListener("touchstart",(e)=>{
 
     e.preventDefault();
 
@@ -309,34 +382,98 @@ sandArea.addEventListener("touchstart", function(e){
 
     }
 
-}, { passive:false });
+},{passive:false});
 
 // -----------------------
-// ESC 닫기
+// 홈으로 돌아왔을 때
+// 데이터 다시 불러오기
 // -----------------------
 
-document.addEventListener("keydown", function(e){
+window.addEventListener("focus",()=>{
 
-    if(e.key === "Escape"){
+    loadUser();
+
+});
+
+// -----------------------
+// ESC로 보상창 닫기
+// -----------------------
+
+document.addEventListener("keydown",(e)=>{
+
+    if(e.key==="Escape"){
 
         rewardScreen.classList.add("hidden");
 
-        isDigging = false;
+        isDigging=false;
 
     }
 
 });
 
 // -----------------------
-// 화면 새로고침
+// 탭 다시 열렸을 때
 // -----------------------
 
-function refreshUI(){
+document.addEventListener("visibilitychange",()=>{
 
-    shellText.textContent = shellPoint;
+    if(!document.hidden){
 
-    remainText.textContent = remainDig;
+        loadUser();
+
+    }
+
+});
+
+// -----------------------
+// Firebase 저장
+// -----------------------
+
+async function saveUser(){
+
+    await updateDoc(
+
+        doc(db,"users",loginUser),
+
+        {
+
+            shell:shellPoint,
+
+            dig:remainDig,
+
+            totalDig:totalDig,
+
+            lastLogin:today
+
+        }
+
+    );
 
 }
 
+// -----------------------
+// 자동 저장
+// -----------------------
+
+setInterval(()=>{
+
+    saveUser();
+
+},30000);
+
+// -----------------------
+// 페이지 종료 직전 저장
+// -----------------------
+
+window.addEventListener("beforeunload",()=>{
+
+    saveUser();
+
+});
+
+// -----------------------
+// 새로고침
+// -----------------------
+
 refreshUI();
+
