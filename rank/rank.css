@@ -1,0 +1,71 @@
+body{
+
+    margin:0;
+
+    background:#8fd3ff;
+
+    font-family:sans-serif;
+
+}
+
+#rankArea{
+
+    width:100%;
+
+    max-width:700px;
+
+    margin:auto;
+
+    padding:20px;
+
+}
+
+#topBar{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:20px;
+
+}
+
+#title{
+
+    font-size:32px;
+
+    font-weight:bold;
+
+}
+
+#homeButton{
+
+    font-size:18px;
+
+    padding:10px 20px;
+
+    cursor:pointer;
+
+}
+
+.rankItem{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    background:white;
+
+    padding:15px;
+
+    margin-bottom:10px;
+
+    border-radius:10px;
+
+    font-size:22px;
+
+}
