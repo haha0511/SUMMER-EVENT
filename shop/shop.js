@@ -64,8 +64,6 @@ function refreshUI(){
 
     document.getElementById("shellPoint").textContent = shellPoint;
 
-    document.getElementById("digCount").textContent = remainDig;
-
 }
 
 // -----------------------
