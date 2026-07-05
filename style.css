@@ -1,0 +1,228 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,body{
+    width:100%;
+    height:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#87CEEB;
+    overflow:hidden;
+    font-family:"맑은 고딕",sans-serif;
+}
+
+/* 게임 화면(4:3) */
+
+#gameArea{
+
+    position:relative;
+
+    width:min(92vw,1200px);
+
+    aspect-ratio:4/3;
+
+    overflow:hidden;
+
+    border-radius:20px;
+
+    box-shadow:0 0 35px rgba(0,0,0,.35);
+
+    background:#fff;
+
+}
+
+/* 배경 */
+
+#background{
+
+    position:absolute;
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    user-select:none;
+
+    pointer-events:none;
+
+}
+
+/* 상단 */
+
+#topBar{
+
+    position:absolute;
+
+    top:15px;
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+    width:95%;
+
+    height:70px;
+
+    background:rgba(255,255,255,.85);
+
+    border-radius:18px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:0 25px;
+
+    backdrop-filter:blur(10px);
+
+    z-index:100;
+
+}
+
+#title{
+
+    font-size:32px;
+
+    font-weight:bold;
+
+}
+
+#shell{
+
+    font-size:28px;
+
+    font-weight:bold;
+
+}
+
+/* 공통 오브젝트 */
+
+.object{
+
+    position:absolute;
+
+    width:120px;
+
+    height:120px;
+
+    border-radius:25px;
+
+    background:rgba(255,255,255,.9);
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:55px;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+    user-select:none;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.25);
+
+}
+
+.object div{
+
+    margin-top:5px;
+
+    font-size:20px;
+
+    font-weight:bold;
+
+}
+
+.object:hover{
+
+    transform:translateY(-6px) scale(1.05);
+
+}
+
+.object:active{
+
+    transform:scale(.95);
+
+}
+
+/* 위치 */
+
+#gameObject{
+
+    left:18%;
+
+    top:38%;
+
+}
+
+#shopObject{
+
+    right:18%;
+
+    top:34%;
+
+}
+
+#noticeObject{
+
+    left:30%;
+
+    bottom:10%;
+
+}
+
+#rankObject{
+
+    right:28%;
+
+    bottom:12%;
+
+}
+
+/* 모바일 */
+
+@media(max-width:768px){
+
+    #title{
+
+        font-size:20px;
+
+    }
+
+    #shell{
+
+        font-size:18px;
+
+    }
+
+    .object{
+
+        width:85px;
+
+        height:85px;
+
+        font-size:35px;
+
+    }
+
+    .object div{
+
+        font-size:14px;
+
+    }
+
+}
