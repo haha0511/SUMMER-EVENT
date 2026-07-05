@@ -15,7 +15,8 @@ html,body{
 
     background:#87CEEB;
 
-    overflow:hidden;
+    overflow-x:hidden;
+    overflow-y:auto;
 
     font-family:"맑은 고딕",sans-serif;
 
@@ -266,6 +267,38 @@ html,body{
 
 @media(max-width:768px){
 
+    html,body{
+
+        display:block;
+
+        overflow-y:auto;
+
+    }
+
+    #shopArea{
+
+        width:100vw;
+
+        min-height:100vh;
+
+        height:auto;
+
+        aspect-ratio:auto;
+
+        border-radius:0;
+
+        overflow-y:auto;
+
+    }
+
+    #topBar{
+
+        width:96%;
+        height:60px;
+        top:10px;
+
+    }
+
     #title{
 
         font-size:20px;
@@ -280,9 +313,29 @@ html,body{
 
     #shopGrid{
 
+        position:relative;
+
+        top:90px;
+
+        left:0;
+
+        transform:none;
+
+        width:95%;
+
+        margin:0 auto 30px auto;
+
         grid-template-columns:1fr;
 
-        gap:15px;
+        gap:18px;
+
+        padding-bottom:40px;
+
+    }
+
+    .item{
+
+        padding:18px;
 
     }
 
@@ -313,6 +366,8 @@ html,body{
     .buyButton{
 
         font-size:18px;
+
+        padding:14px;
 
     }
 
