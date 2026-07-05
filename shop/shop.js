@@ -1,3 +1,15 @@
+const bgm = new Audio("../sound/bgm.mp3");
+
+bgm.loop = true;
+
+bgm.volume = 0.3;
+
+window.addEventListener("click", () => {
+
+    bgm.play();
+
+}, { once: true });
+
 import { db } from "../firebase.js";
 
 import {
