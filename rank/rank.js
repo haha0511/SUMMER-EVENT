@@ -1,3 +1,5 @@
+const bgm = new Audio("sound/bgm.mp3");
+
 import { db } from "../firebase.js";
 
 import {
