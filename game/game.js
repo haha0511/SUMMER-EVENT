@@ -116,13 +116,13 @@ async function loadUser(){
 
     const data = snap.data();
 
-    shellPoint = data.shell;
+    shellPoint = data.shell ?? 0;
 
-    remainDig = data.dig;
+    remainDig = data.dig ?? 10;
+    
+    totalDig = data.totalDig ?? 0;
 
-    totalDig = data.totalDig;
-
-    lastLogin = data.lastLogin;
+    lastLogin = data.lastLogin ?? "";
 
     if(lastLogin !== today){
 
@@ -343,25 +343,21 @@ async function showReward(){
     totalDig++;
 
     refreshUI();
-}
-
-    // --------------------
-    // Firebase 저장
-    // --------------------
 
     await updateDoc(userRef,{
 
-        shell:shellPoint,
+        shell: shellPoint,
 
-        dig:remainDig,
+        dig: remainDig,
 
-        totalDig:totalDig
+        totalDig: totalDig
 
     });
 
     rewardScreen.classList.remove("hidden");
 
 }
+
 
 // --------------------
 // 확인 버튼
