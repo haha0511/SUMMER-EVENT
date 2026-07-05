@@ -7,6 +7,8 @@
 // 로그인 확인
 // -----------------------
 
+import { db, doc, getDoc } from "./firebase.js";
+
 const loginUser = localStorage.getItem("loginUser");
 
 if(loginUser === null){
@@ -15,18 +17,31 @@ if(loginUser === null){
 
 }
 
-// 조개 포인트 불러오기
-let shellPoint = localStorage.getItem("shellPoint");
+const shellText = document.getElementById("shellPoint");
 
+async function loadUser(){
 
+    const userRef = doc(db,"users",loginUser);
 
-if (shellPoint === null) {
-    shellPoint = 0;
-    localStorage.setItem("shellPoint", shellPoint);
+    const snap = await getDoc(userRef);
+
+    if(!snap.exists()){
+
+        alert("계정을 찾을 수 없습니다.");
+
+        location.href="login.html";
+
+        return;
+
+    }
+
+    const data = snap.data();
+
+    shellText.textContent = data.shell;
+
 }
 
-// 화면 표시
-document.getElementById("shellPoint").textContent = shellPoint;
+loadUser();
 
 // 게임
 document.getElementById("gameObject").addEventListener("click", () => {
