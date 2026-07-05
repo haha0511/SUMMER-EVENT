@@ -103,3 +103,145 @@ html,body{
 }
 
 }
+
+/* ========================= */
+/* 보상 박스 */
+/* ========================= */
+
+#rewardScreen{
+
+    position:absolute;
+
+    inset:0;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:rgba(0,0,0,.75);
+
+    z-index:400;
+
+    padding:20px;
+
+}
+
+#rewardBox{
+
+    width:90%;
+
+    max-width:500px;
+
+    background:white;
+
+    color:black;
+
+    border-radius:20px;
+
+    padding:30px;
+
+    text-align:center;
+
+    max-height:85vh;
+
+    overflow-y:auto;
+
+    box-shadow:0 0 30px rgba(0,0,0,.35);
+
+}
+
+#rewardEmoji{
+
+    font-size:120px;
+
+}
+
+#rewardTitle{
+
+    margin-top:15px;
+
+    font-size:34px;
+
+    font-weight:bold;
+
+}
+
+#rewardPoint{
+
+    margin-top:15px;
+
+    font-size:26px;
+
+    color:#ff9800;
+
+    font-weight:bold;
+
+}
+
+#rewardButton{
+
+    width:100%;
+
+    margin-top:30px;
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:15px;
+
+    background:#4CAF50;
+
+    color:white;
+
+    font-size:22px;
+
+    cursor:pointer;
+
+}
+
+#rewardButton:hover{
+
+    background:#43A047;
+
+}
+
+#rewardBox{
+
+    width:95%;
+
+    padding:20px;
+
+    max-height:80vh;
+
+}
+
+#rewardEmoji{
+
+    font-size:80px;
+
+}
+
+#rewardTitle{
+
+    font-size:24px;
+
+}
+
+#rewardPoint{
+
+    font-size:20px;
+
+}
+
+#rewardButton{
+
+    width:100%;
+
+    font-size:18px;
+
+    padding:14px;
+
+}
