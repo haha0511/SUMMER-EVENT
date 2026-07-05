@@ -78,9 +78,15 @@ document.getElementById("homeButton").onclick=()=>{
 
 const buyButton = document.getElementById("buyShovel");
 
-buyButton.onclick = async ()=>{
+buyButton.onclick = async () => {
 
-    if(shellPoint < 100){
+    const snap = await getDoc(userRef);
+    const data = snap.data();
+
+    shellPoint = data.shell ?? 0;
+    remainDig = data.dig ?? 0;
+
+    if (shellPoint < 100) {
 
         alert("🐚 조개가 부족합니다.");
 
@@ -89,18 +95,14 @@ buyButton.onclick = async ()=>{
     }
 
     shellPoint -= 100;
-
     remainDig += 4;
 
-    refreshUI();
-
-    await updateDoc(userRef,{
-
-        shell:shellPoint,
-
-        dig:remainDig
-
+    await updateDoc(userRef, {
+        shell: shellPoint,
+        dig: remainDig
     });
+
+    refreshUI();
 
     alert("⛏️ 삽 4개를 구매했습니다!");
 
