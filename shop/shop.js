@@ -1,96 +1,133 @@
-// =============================
-// Summer Event Shop
-// shop.js
-// =============================
+import { db } from "../firebase.js";
 
-// -----------------------------
-// 조개 포인트
-// -----------------------------
+import {
 
-let shellPoint = Number(localStorage.getItem("shellPoint"));
+    doc,
+    getDoc,
+    updateDoc
 
-if (isNaN(shellPoint)) {
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
-    shellPoint = 0;
+// -----------------------
+// 로그인 확인
+// -----------------------
 
-    localStorage.setItem("shellPoint", shellPoint);
+const loginUser = localStorage.getItem("loginUser");
 
-}
+if(!loginUser){
 
-// -----------------------------
-// 삽 개수
-// -----------------------------
-
-let remainDig = Number(localStorage.getItem("remainDig"));
-
-if (isNaN(remainDig)) {
-
-    remainDig = 10;
-
-    localStorage.setItem("remainDig", remainDig);
+    location.href="../login.html";
 
 }
 
-// -----------------------------
-// 화면 표시
-// -----------------------------
+// -----------------------
 
-document.getElementById("shellPoint").textContent = shellPoint;
+const userRef = doc(db,"users",loginUser);
 
-// -----------------------------
-// 홈 버튼
-// -----------------------------
+let shellPoint = 0;
 
-document.getElementById("homeButton").onclick = () => {
+let remainDig = 0;
 
-    location.href = "../index.html";
+// -----------------------
+// 유저 불러오기
+// -----------------------
 
-};
+async function loadUser(){
 
-// -----------------------------
-// 삽 구매
-// -----------------------------
+    const snap = await getDoc(userRef);
 
-document.getElementById("buyShovel").onclick = () => {
+    if(!snap.exists()){
 
-    const price = 100;
+        alert("계정을 찾을 수 없습니다.");
 
-    if (shellPoint < price) {
-
-        alert("🐚 조개 포인트가 부족합니다.");
+        location.href="../login.html";
 
         return;
 
     }
 
-    if (!confirm("⛏️ 삽 4개를 구매하시겠습니까?\n\n가격 : 🐚100")) {
+    const data = snap.data();
 
-        return;
+    shellPoint = data.shell;
 
-    }
+    remainDig = data.dig;
 
-    shellPoint -= price;
+    refreshUI();
 
-    remainDig += 4;
+}
 
-    localStorage.setItem("shellPoint", shellPoint);
+loadUser();
 
-    localStorage.setItem("remainDig", remainDig);
+// -----------------------
+
+function refreshUI(){
 
     document.getElementById("shellPoint").textContent = shellPoint;
 
-    alert("🎉 삽 4개를 구매했습니다!");
+    document.getElementById("digCount").textContent = remainDig;
+
+}
+
+// -----------------------
+// 홈 버튼
+// -----------------------
+
+document.getElementById("homeButton").onclick=()=>{
+
+    location.href="../index.html";
 
 };
 
-// -----------------------------
-// 모바일 터치 지원
-// -----------------------------
+// -----------------------
+// 삽 구매
+// -----------------------
 
-document.getElementById("buyShovel").addEventListener("touchstart", function (e) {
+const buyButton=document.getElementById("buyButton");
 
-    e.preventDefault();
+buyButton.onclick=async()=>{
 
-    this.click();
+    if(shellPoint<100){
 
-}, { passive: false });
+        alert("🐚 조개가 부족합니다.");
+
+        return;
+
+    }
+
+    shellPoint-=100;
+
+    remainDig++;
+
+    refreshUI();
+
+    await updateDoc(userRef,{
+
+        shell:shellPoint,
+
+        dig:remainDig
+
+    });
+
+    alert("⛏️ 삽을 구매했습니다!");
+
+};
+
+// -----------------------
+// 화면 다시 열렸을 때
+// -----------------------
+
+window.addEventListener("focus",()=>{
+
+    loadUser();
+
+});
+
+document.addEventListener("visibilitychange",()=>{
+
+    if(!document.hidden){
+
+        loadUser();
+
+    }
+
+});
