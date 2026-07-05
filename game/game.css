@@ -1,0 +1,422 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,body{
+
+    width:100%;
+    height:100%;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:#87CEEB;
+
+    overflow:hidden;
+
+    font-family:"맑은 고딕",sans-serif;
+
+}
+
+#gameArea{
+
+    position:relative;
+
+    width:min(92vw,1200px);
+
+    aspect-ratio:4/3;
+
+    overflow:hidden;
+
+    border-radius:20px;
+
+    background:#ffffff;
+
+    box-shadow:0 0 35px rgba(0,0,0,.35);
+
+}
+
+#background{
+
+    position:absolute;
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    pointer-events:none;
+
+    user-select:none;
+
+}
+
+/* ---------------------- */
+/* 상단 */
+/* ---------------------- */
+
+#topBar{
+
+    position:absolute;
+
+    top:15px;
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+    width:95%;
+
+    height:70px;
+
+    background:rgba(255,255,255,.88);
+
+    border-radius:18px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:0 20px;
+
+    z-index:100;
+
+    backdrop-filter:blur(10px);
+
+}
+
+#homeButton{
+
+    border:none;
+
+    background:#ffffff;
+
+    padding:10px 18px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-size:18px;
+
+    transition:.2s;
+
+}
+
+#homeButton:hover{
+
+    transform:scale(1.05);
+
+}
+
+#title{
+
+    font-size:28px;
+
+    font-weight:bold;
+
+}
+
+#shellBox{
+
+    font-size:24px;
+
+    font-weight:bold;
+
+}
+
+/* ---------------------- */
+/* 삽 개수 */
+/* ---------------------- */
+
+#digCount{
+
+    position:absolute;
+
+    top:100px;
+
+    left:20px;
+
+    padding:12px 20px;
+
+    background:rgba(255,255,255,.9);
+
+    border-radius:15px;
+
+    font-size:22px;
+
+    font-weight:bold;
+
+    z-index:50;
+
+}
+
+/* ---------------------- */
+/* 모래 영역 */
+/* ---------------------- */
+
+#sandArea{
+
+    position:absolute;
+
+    inset:0;
+
+    cursor:pointer;
+
+    z-index:1;
+
+}
+
+/* ---------------------- */
+/* 파는 중 */
+/* ---------------------- */
+
+#loadingScreen{
+
+    position:absolute;
+
+    inset:0;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:rgba(0,0,0,.72);
+
+    color:white;
+
+    z-index:300;
+
+}
+
+#loadingText{
+
+    font-size:46px;
+
+    font-weight:bold;
+
+    margin-bottom:25px;
+
+}
+
+#countDown{
+
+    font-size:140px;
+
+    font-weight:bold;
+
+    animation:pulse .8s infinite;
+
+}
+
+/* ---------------------- */
+/* 보상창 */
+/* ---------------------- */
+
+#rewardScreen{
+
+    position:absolute;
+
+    inset:0;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:rgba(0,0,0,.78);
+
+    color:white;
+
+    z-index:400;
+
+}
+
+#rewardEmoji{
+
+    font-size:170px;
+
+    animation:pop .35s;
+
+}
+
+#rewardTitle{
+
+    margin-top:15px;
+
+    font-size:46px;
+
+    font-weight:bold;
+
+    text-align:center;
+
+}
+
+#rewardPoint{
+
+    margin-top:15px;
+
+    font-size:34px;
+
+    color:#FFD54F;
+
+    font-weight:bold;
+
+}
+
+#rewardButton{
+
+    margin-top:40px;
+
+    border:none;
+
+    border-radius:15px;
+
+    padding:16px 45px;
+
+    font-size:24px;
+
+    background:#4CAF50;
+
+    color:white;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+#rewardButton:hover{
+
+    transform:scale(1.05);
+
+}
+
+/* ---------------------- */
+
+.hidden{
+
+    display:none !important;
+
+}
+
+/* ---------------------- */
+
+@keyframes pulse{
+
+    0%{
+
+        transform:scale(1);
+
+    }
+
+    50%{
+
+        transform:scale(1.15);
+
+    }
+
+    100%{
+
+        transform:scale(1);
+
+    }
+
+}
+
+@keyframes pop{
+
+    0%{
+
+        transform:scale(0);
+
+    }
+
+    80%{
+
+        transform:scale(1.15);
+
+    }
+
+    100%{
+
+        transform:scale(1);
+
+    }
+
+}
+
+/* ---------------------- */
+
+@media(max-width:768px){
+
+    #title{
+
+        font-size:20px;
+
+    }
+
+    #shellBox{
+
+        font-size:18px;
+
+    }
+
+    #digCount{
+
+        font-size:16px;
+
+    }
+
+    #loadingText{
+
+        font-size:28px;
+
+    }
+
+    #countDown{
+
+        font-size:90px;
+
+    }
+
+    #rewardEmoji{
+
+        font-size:120px;
+
+    }
+
+    #rewardTitle{
+
+        font-size:28px;
+
+    }
+
+    #rewardPoint{
+
+        font-size:22px;
+
+    }
+
+    #rewardButton{
+
+        font-size:18px;
+
+        padding:12px 28px;
+
+    }
+
+}
