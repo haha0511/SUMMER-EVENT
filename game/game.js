@@ -1,18 +1,20 @@
-// =======================
+// ==========================================
 // Summer Event Game
 // game.js
-// =======================
+// Part 1
+// ==========================================
+
+import { db } from "../firebase.js";
 
 import {
-    db,
     doc,
     getDoc,
     updateDoc
-} from "../firebase.js";
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
-// -----------------------
+// --------------------
 // 로그인 확인
-// -----------------------
+// --------------------
 
 const loginUser = localStorage.getItem("loginUser");
 
@@ -22,9 +24,15 @@ if (!loginUser) {
 
 }
 
-// -----------------------
+// --------------------
+// Firestore
+// --------------------
+
+const userRef = doc(db, "users", loginUser);
+
+// --------------------
 // 변수
-// -----------------------
+// --------------------
 
 let shellPoint = 0;
 
@@ -32,17 +40,19 @@ let remainDig = 10;
 
 let totalDig = 0;
 
+let lastLogin = "";
+
 let isDigging = false;
 
-// -----------------------
-// 오늘 날짜
-// -----------------------
+// --------------------
+// 날짜
+// --------------------
 
 const today = new Date().toISOString().slice(0,10);
 
-// -----------------------
+// --------------------
 // HTML
-// -----------------------
+// --------------------
 
 const shellText = document.getElementById("shellPoint");
 
@@ -64,29 +74,39 @@ const rewardButton = document.getElementById("rewardButton");
 
 const countDown = document.getElementById("countDown");
 
-// -----------------------
+// --------------------
+// 홈 버튼
+// --------------------
 
 document.getElementById("homeButton").onclick = () => {
 
-    location.href="../index.html";
+    location.href = "../index.html";
 
 };
 
-// -----------------------
-// 사용자 정보 불러오기
-// -----------------------
+// --------------------
+// UI
+// --------------------
+
+function refreshUI(){
+
+    shellText.textContent = shellPoint;
+
+    remainText.textContent = remainDig;
+
+}
+
+// --------------------
+// 유저 불러오기
+// --------------------
 
 async function loadUser(){
-
-    const userRef = doc(db,"users",loginUser);
 
     const snap = await getDoc(userRef);
 
     if(!snap.exists()){
 
         alert("계정을 찾을 수 없습니다.");
-
-        localStorage.removeItem("loginUser");
 
         location.href="../login.html";
 
@@ -96,15 +116,19 @@ async function loadUser(){
 
     const data = snap.data();
 
-    shellPoint = data.shell ?? 0;
+    shellPoint = data.shell;
 
-    remainDig = data.dig ?? 10;
+    remainDig = data.dig;
 
-    totalDig = data.totalDig ?? 0;
+    totalDig = data.totalDig;
 
-    if(data.lastLogin !== today){
+    lastLogin = data.lastLogin;
+
+    if(lastLogin !== today){
 
         remainDig += 10;
+
+        lastLogin = today;
 
         await updateDoc(userRef,{
 
@@ -122,117 +146,101 @@ async function loadUser(){
 
 }
 
-// -----------------------
-// 화면 갱신
-// -----------------------
-
-function refreshUI(){
-
-    shellText.textContent = shellPoint;
-
-    remainText.textContent = remainDig;
-
-}
-
-// -----------------------
-
-loadUser();
-
-// -----------------------
+// --------------------
 // 보상 목록
-// -----------------------
+// --------------------
 
 const rewards = [
 
-{
+    {
 
-emoji:"🥚",
+        emoji:"🥚",
 
-title:"이스터에그가 등장했습니다!",
+        title:"이스터에그가 등장했습니다!",
 
-chance:0.5,
+        chance:0.5,
 
-shell:10000
+        shell:10000
 
-},
+    },
 
-{
+    {
 
-emoji:"📦",
+        emoji:"📦",
 
-title:"보물상자가 등장했습니다!",
+        title:"보물상자가 등장했습니다!",
 
-chance:0.6,
+        chance:0.6,
 
-shell:5000
+        shell:5000
 
-},
+    },
 
-{
+    {
 
-emoji:"👑",
+        emoji:"👑",
 
-title:"고래 왕관이 등장했습니다!",
+        title:"고래 왕관이 등장했습니다!",
 
-chance:2,
+        chance:2,
 
-shell:2000
+        shell:2000
 
-},
+    },
 
-{
+    {
 
-emoji:"🦪",
+        emoji:"🦪",
 
-title:"진주가 등장했습니다!",
+        title:"진주가 등장했습니다!",
 
-chance:8,
+        chance:8,
 
-shell:500
+        shell:500
 
-},
+    },
 
-{
+    {
 
-emoji:"🍉",
+        emoji:"🍉",
 
-title:"수박이 등장했습니다!",
+        title:"수박이 등장했습니다!",
 
-chance:20,
+        chance:20,
 
-shell:100
+        shell:100
 
-},
+    },
 
-{
+    {
 
-emoji:"🌿",
+        emoji:"🌿",
 
-title:"미역이 등장했습니다!",
+        title:"미역이 등장했습니다!",
 
-chance:49,
+        chance:49,
 
-shell:20
+        shell:20
 
-},
+    },
 
-{
+    {
 
-emoji:"🪨",
+        emoji:"🪨",
 
-title:"아무것도 발견하지 못했습니다.",
+        title:"아무것도 발견하지 못했습니다.",
 
-chance:19.9,
+        chance:19.9,
 
-shell:0
+        shell:0
 
-}
+    }
 
 ];
 
-// -----------------------
-// 보상 선택
-// -----------------------
+// --------------------
+// 보상 뽑기
+// --------------------
 
 function getReward(){
 
@@ -256,9 +264,15 @@ function getReward(){
 
 }
 
-// -----------------------
-// 파기 시작
-// -----------------------
+// --------------------
+// 게임 시작
+// --------------------
+
+loadUser();
+
+// --------------------
+// 모래 클릭
+// --------------------
 
 sandArea.onclick = async () => {
 
@@ -278,17 +292,11 @@ sandArea.onclick = async () => {
 
     refreshUI();
 
-    await updateDoc(
+    await updateDoc(userRef,{
 
-        doc(db,"users",loginUser),
+        dig:remainDig
 
-        {
-
-            dig:remainDig
-
-        }
-
-    );
+    });
 
     loadingScreen.classList.remove("hidden");
 
@@ -316,9 +324,9 @@ sandArea.onclick = async () => {
 
 };
 
-// -----------------------
-// 보상 표시
-// -----------------------
+// --------------------
+// 보상 지급
+// --------------------
 
 async function showReward(){
 
@@ -335,30 +343,29 @@ async function showReward(){
     totalDig++;
 
     refreshUI();
+}
 
-    await updateDoc(
+    // --------------------
+    // Firebase 저장
+    // --------------------
 
-        doc(db,"users",loginUser),
+    await updateDoc(userRef,{
 
-        {
+        shell:shellPoint,
 
-            shell:shellPoint,
+        dig:remainDig,
 
-            dig:remainDig,
+        totalDig:totalDig
 
-            totalDig:totalDig
-
-        }
-
-    );
+    });
 
     rewardScreen.classList.remove("hidden");
 
 }
 
-// -----------------------
+// --------------------
 // 확인 버튼
-// -----------------------
+// --------------------
 
 rewardButton.onclick = () => {
 
@@ -368,9 +375,9 @@ rewardButton.onclick = () => {
 
 };
 
-// -----------------------
-// 모바일 터치
-// -----------------------
+// --------------------
+// 모바일 터치 지원
+// --------------------
 
 sandArea.addEventListener("touchstart",(e)=>{
 
@@ -384,20 +391,9 @@ sandArea.addEventListener("touchstart",(e)=>{
 
 },{passive:false});
 
-// -----------------------
-// 홈으로 돌아왔을 때
-// 데이터 다시 불러오기
-// -----------------------
-
-window.addEventListener("focus",()=>{
-
-    loadUser();
-
-});
-
-// -----------------------
+// --------------------
 // ESC로 보상창 닫기
-// -----------------------
+// --------------------
 
 document.addEventListener("keydown",(e)=>{
 
@@ -411,9 +407,20 @@ document.addEventListener("keydown",(e)=>{
 
 });
 
-// -----------------------
-// 탭 다시 열렸을 때
-// -----------------------
+// --------------------
+// 창 다시 활성화 시
+// 최신 데이터 불러오기
+// --------------------
+
+window.addEventListener("focus",()=>{
+
+    loadUser();
+
+});
+
+// --------------------
+// 탭 전환 후 복귀
+// --------------------
 
 document.addEventListener("visibilitychange",()=>{
 
@@ -424,56 +431,3 @@ document.addEventListener("visibilitychange",()=>{
     }
 
 });
-
-// -----------------------
-// Firebase 저장
-// -----------------------
-
-async function saveUser(){
-
-    await updateDoc(
-
-        doc(db,"users",loginUser),
-
-        {
-
-            shell:shellPoint,
-
-            dig:remainDig,
-
-            totalDig:totalDig,
-
-            lastLogin:today
-
-        }
-
-    );
-
-}
-
-// -----------------------
-// 자동 저장
-// -----------------------
-
-setInterval(()=>{
-
-    saveUser();
-
-},30000);
-
-// -----------------------
-// 페이지 종료 직전 저장
-// -----------------------
-
-window.addEventListener("beforeunload",()=>{
-
-    saveUser();
-
-});
-
-// -----------------------
-// 새로고침
-// -----------------------
-
-refreshUI();
-
