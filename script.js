@@ -20,7 +20,7 @@ document.getElementById("shellPoint").textContent = shellPoint;
 
 document.getElementById("gameObject").addEventListener("click", () => {
 
-    location.href = "GAME/game.html";
+    location.href = "game/game.html";
 
 });
 
@@ -30,7 +30,7 @@ document.getElementById("gameObject").addEventListener("click", () => {
 
 document.getElementById("shopObject").addEventListener("click", () => {
 
-    location.href = "SHOP/shop.html";
+    location.href = "shop/shop.html";
 
 });
 
@@ -40,7 +40,7 @@ document.getElementById("shopObject").addEventListener("click", () => {
 
 document.getElementById("noticeObject").addEventListener("click", () => {
 
-    location.href = "NOTICE/notice.html";
+    location.href = "notice/notice.html";
 
 });
 
@@ -50,6 +50,6 @@ document.getElementById("noticeObject").addEventListener("click", () => {
 
 document.getElementById("rankObject").addEventListener("click", () => {
 
-    location.href = "RANK/rank.html";
+    location.href = "rank/rank.html";
 
 });
