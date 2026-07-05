@@ -1,36 +1,43 @@
-import { db, doc, getDoc } from "./firebase.js";
+import { db } from "./firebase.js";
 
-// =============================
+import {
+
+    doc,
+    getDoc
+
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+// -----------------------
 // 로그인 확인
-// =============================
+// -----------------------
 
 const loginUser = localStorage.getItem("loginUser");
 
-if (!loginUser) {
+if(!loginUser){
 
-    location.href = "login.html";
+    location.href="login.html";
 
 }
 
-// =============================
-// 조개 불러오기
-// =============================
+// -----------------------
+// Firestore
+// -----------------------
 
-const shellText = document.getElementById("shellPoint");
+const userRef = doc(db,"users",loginUser);
 
-async function loadUser() {
+// -----------------------
+// 유저 정보 불러오기
+// -----------------------
 
-    const userRef = doc(db, "users", loginUser);
+async function loadUser(){
 
     const snap = await getDoc(userRef);
 
-    if (!snap.exists()) {
+    if(!snap.exists()){
 
         alert("계정을 찾을 수 없습니다.");
 
-        localStorage.removeItem("loginUser");
-
-        location.href = "login.html";
+        location.href="login.html";
 
         return;
 
@@ -38,48 +45,48 @@ async function loadUser() {
 
     const data = snap.data();
 
-    shellText.textContent = data.shell;
+    document.getElementById("shellPoint").textContent = data.shell;
 
 }
 
 loadUser();
 
-// =============================
+// -----------------------
 // 게임
-// =============================
+// -----------------------
 
-document.getElementById("gameObject").onclick = () => {
+document.getElementById("gameObject").onclick = ()=>{
 
-    location.href = "game/game.html";
+    location.href="game/game.html";
 
 };
 
-// =============================
+// -----------------------
 // 상점
-// =============================
+// -----------------------
 
-document.getElementById("shopObject").onclick = () => {
+document.getElementById("shopObject").onclick = ()=>{
 
-    location.href = "shop/shop.html";
+    location.href="shop/shop.html";
 
 };
 
-// =============================
+// -----------------------
 // 공지
-// =============================
+// -----------------------
 
-document.getElementById("noticeObject").onclick = () => {
+document.getElementById("noticeObject").onclick = ()=>{
 
-    location.href = "notice/notice.html";
+    location.href="notice/notice.html";
 
 };
 
-// =============================
+// -----------------------
 // 랭킹
-// =============================
+// -----------------------
 
-document.getElementById("rankObject").onclick = () => {
+document.getElementById("rankObject").onclick = ()=>{
 
-    location.href = "rank/rank.html";
+    location.href="rank/rank.html";
 
 };
