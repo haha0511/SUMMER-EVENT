@@ -7,6 +7,12 @@ import {
 
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
+const bgm = new Audio("sound/bgm.mp3");
+
+bgm.loop = true;
+
+bgm.volume = 0.3;
+
 // -----------------------
 // 로그인 확인
 // -----------------------
@@ -90,3 +96,8 @@ document.getElementById("rankObject").onclick = ()=>{
     location.href="rank/rank.html";
 
 };
+window.addEventListener("click", () => {
+
+    bgm.play();
+
+}, { once: true });
