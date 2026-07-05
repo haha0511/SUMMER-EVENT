@@ -78,15 +78,11 @@ document.getElementById("homeButton").onclick=()=>{
 
 };
 
-// -----------------------
-// 삽 구매
-// -----------------------
+const buyButton = document.getElementById("buyShovel");
 
-const buyButton=document.getElementById("buyButton");
+buyButton.onclick = async ()=>{
 
-buyButton.onclick=async()=>{
-
-    if(shellPoint<100){
+    if(shellPoint < 100){
 
         alert("🐚 조개가 부족합니다.");
 
@@ -94,9 +90,9 @@ buyButton.onclick=async()=>{
 
     }
 
-    shellPoint-=100;
+    shellPoint -= 100;
 
-    remainDig++;
+    remainDig += 4;
 
     refreshUI();
 
@@ -108,7 +104,7 @@ buyButton.onclick=async()=>{
 
     });
 
-    alert("⛏️ 삽을 구매했습니다!");
+    alert("⛏️ 삽 4개를 구매했습니다!");
 
 };
 
