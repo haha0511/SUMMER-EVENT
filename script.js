@@ -1,35 +1,36 @@
-// =============================
-// Summer Event Home
-// script.js
-// =============================
-
-// -----------------------
-// 로그인 확인
-// -----------------------
-
 import { db, doc, getDoc } from "./firebase.js";
+
+// =============================
+// 로그인 확인
+// =============================
 
 const loginUser = localStorage.getItem("loginUser");
 
-if(loginUser === null){
+if (!loginUser) {
 
     location.href = "login.html";
 
 }
 
+// =============================
+// 조개 불러오기
+// =============================
+
 const shellText = document.getElementById("shellPoint");
 
-async function loadUser(){
+async function loadUser() {
 
-    const userRef = doc(db,"users",loginUser);
+    const userRef = doc(db, "users", loginUser);
 
     const snap = await getDoc(userRef);
 
-    if(!snap.exists()){
+    if (!snap.exists()) {
 
         alert("계정을 찾을 수 없습니다.");
 
-        location.href="login.html";
+        localStorage.removeItem("loginUser");
+
+        location.href = "login.html";
 
         return;
 
@@ -43,22 +44,42 @@ async function loadUser(){
 
 loadUser();
 
+// =============================
 // 게임
-document.getElementById("gameObject").addEventListener("click", () => {
+// =============================
+
+document.getElementById("gameObject").onclick = () => {
+
     location.href = "game/game.html";
-});
 
+};
+
+// =============================
 // 상점
-document.getElementById("shopObject").addEventListener("click", () => {
+// =============================
+
+document.getElementById("shopObject").onclick = () => {
+
     location.href = "shop/shop.html";
-});
 
+};
+
+// =============================
 // 공지
-document.getElementById("noticeObject").addEventListener("click", () => {
-    location.href = "notice/notice.html";
-});
+// =============================
 
+document.getElementById("noticeObject").onclick = () => {
+
+    location.href = "notice/notice.html";
+
+};
+
+// =============================
 // 랭킹
-document.getElementById("rankObject").addEventListener("click", () => {
+// =============================
+
+document.getElementById("rankObject").onclick = () => {
+
     location.href = "rank/rank.html";
-});
+
+};
