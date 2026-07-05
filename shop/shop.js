@@ -1,83 +1,96 @@
-// ===============================
+// =============================
 // Summer Event Shop
 // shop.js
-// ===============================
+// =============================
 
-// 조개 포인트 불러오기
+// -----------------------------
+// 조개 포인트
+// -----------------------------
+
 let shellPoint = Number(localStorage.getItem("shellPoint"));
 
 if (isNaN(shellPoint)) {
+
     shellPoint = 0;
+
     localStorage.setItem("shellPoint", shellPoint);
+
 }
 
-// 삽 개수 불러오기
+// -----------------------------
+// 삽 개수
+// -----------------------------
+
 let remainDig = Number(localStorage.getItem("remainDig"));
 
 if (isNaN(remainDig)) {
+
     remainDig = 10;
+
     localStorage.setItem("remainDig", remainDig);
+
 }
 
+// -----------------------------
 // 화면 표시
-const shellText = document.getElementById("shellPoint");
-shellText.textContent = shellPoint;
+// -----------------------------
 
+document.getElementById("shellPoint").textContent = shellPoint;
+
+// -----------------------------
 // 홈 버튼
+// -----------------------------
+
 document.getElementById("homeButton").onclick = () => {
 
     location.href = "../index.html";
 
 };
 
-// 구매 버튼
-const buyButtons = document.querySelectorAll(".buyButton");
+// -----------------------------
+// 삽 구매
+// -----------------------------
 
-// 구매 이벤트
-buyButtons.forEach(button => {
+document.getElementById("buyShovel").onclick = () => {
 
-    button.addEventListener("click", () => {
+    const price = 100;
 
-        const item = button.dataset.item;
-        const price = Number(button.dataset.price);
+    if (shellPoint < price) {
 
-        // 돈 부족
-        if (shellPoint < price) {
+        alert("🐚 조개 포인트가 부족합니다.");
 
-            alert("🐚 조개 포인트가 부족합니다.");
+        return;
 
-            return;
+    }
 
-        }
+    if (!confirm("⛏️ 삽 4개를 구매하시겠습니까?\n\n가격 : 🐚100")) {
 
-        // 삽 구매
-        if (item === "shovel") {
+        return;
 
-            const check = confirm(
-                "⛏️ 삽 묶음\n\n" +
-                "가격 : 🐚 500\n" +
-                "획득 : 삽 +4개\n\n" +
-                "구매하시겠습니까?"
-            );
+    }
 
-            if (!check) return;
+    shellPoint -= price;
 
-            shellPoint -= price;
-            remainDig += 4;
+    remainDig += 4;
 
-            localStorage.setItem("shellPoint", shellPoint);
-            localStorage.setItem("remainDig", remainDig);
+    localStorage.setItem("shellPoint", shellPoint);
 
-            shellText.textContent = shellPoint;
+    localStorage.setItem("remainDig", remainDig);
 
-            alert(
-                "🎉 구매 완료!\n\n" +
-                "삽 +4개 지급!\n\n" +
-                "현재 삽 : " + remainDig + "개"
-            );
+    document.getElementById("shellPoint").textContent = shellPoint;
 
-        }
+    alert("🎉 삽 4개를 구매했습니다!");
 
-    });
+};
 
-});
+// -----------------------------
+// 모바일 터치 지원
+// -----------------------------
+
+document.getElementById("buyShovel").addEventListener("touchstart", function (e) {
+
+    e.preventDefault();
+
+    this.click();
+
+}, { passive: false });
