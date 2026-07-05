@@ -345,13 +345,9 @@ async function showReward(){
     refreshUI();
 
     await updateDoc(userRef,{
-
         shell: shellPoint,
-
         dig: remainDig,
-
         totalDig: totalDig
-
     });
 
     rewardScreen.classList.remove("hidden");
