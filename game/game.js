@@ -56,6 +56,12 @@ let lastLogin = "";
 
 let isDigging = false;
 
+let goldenDig = 0;
+
+let luckyChance = 0;
+
+let rewardList = [...rewards];
+
 // --------------------
 // 날짜
 // --------------------
@@ -126,15 +132,16 @@ async function loadUser(){
 
     }
 
+
     const data = snap.data();
 
     shellPoint = data.shell ?? 0;
-
     remainDig = data.dig ?? 10;
-    
     totalDig = data.totalDig ?? 0;
-
     lastLogin = data.lastLogin ?? "";
+
+    goldenDig = data.goldenDig ?? 0;
+    luckyChance = data.luckyChance ?? 0;
 
     if(lastLogin !== today){
 
@@ -260,7 +267,7 @@ function getReward(){
 
     let total = 0;
 
-    for(const item of rewards){
+    for(const item of rewardList){
 
         total += item.chance;
 
@@ -272,7 +279,15 @@ function getReward(){
 
     }
 
-    return rewards[rewards.length - 1];
+    return rewardList[rewardList.length-1];
+
+}
+
+if(luckyChance > 0){
+
+    rewardList[0].chance += 2;
+    rewardList[1].chance += 2;
+    rewardList[2].chance += 6;
 
 }
 
@@ -357,10 +372,32 @@ async function showReward(){
     refreshUI();
 
     await updateDoc(userRef,{
-        shell: shellPoint,
-        dig: remainDig,
-        totalDig: totalDig
+
+        shell:shellPoint,
+
+        dig:remainDig,
+
+        totalDig:totalDig,
+
+        goldenDig:goldenDig,
+
+        luckyChance:luckyChance
+
     });
+
+    if(goldenDig > 0){
+
+    result.shell *= 2;
+
+    goldenDig--;
+
+    }
+
+    if(luckyChance > 0){
+
+        luckyChance--;
+
+    }
 
     rewardScreen.classList.remove("hidden");
 
