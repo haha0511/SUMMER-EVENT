@@ -52,13 +52,13 @@ let remainDig = 10;
 
 let totalDig = 0;
 
-let lastLogin = "";
-
-let isDigging = false;
-
 let goldenDig = 0;
 
 let luckyChance = 0;
+
+let lastLogin = "";
+
+let isDigging = false;
 
 let rewardList = [...rewards];
 
@@ -263,25 +263,29 @@ const rewards = [
 
 function getReward(){
 
-    let random = Math.random() * 100;
+    let rewardList = rewards.map(item => ({ ...item }));
 
-    let total = 0;
-
-    for(const item of rewardList){
-
-        total += item.chance;
-
-        if(random <= total){
-
-            return item;
-
-        }
-
+    if (luckyChance > 0) {
+        rewardList[0].chance += 2;
+        rewardList[1].chance += 2;
+        rewardList[2].chance += 6;
     }
 
-    return rewardList[rewardList.length-1];
+    let random = Math.random() * 100;
+    let total = 0;
+
+    for (const item of rewardList) {
+        total += item.chance;
+    }
+
+    if (random <= total) {
+        return item;
+    }
+
+    return rewardList[rewardList.length - 1];
 
 }
+
 
 if(luckyChance > 0){
 
@@ -296,6 +300,9 @@ if(luckyChance > 0){
 // --------------------
 
 loadUser();
+
+    goldenDig = data.goldenDig ?? 0;
+    luckyChance = data.luckyChance ?? 0;
 
 // --------------------
 // 모래 클릭
@@ -358,6 +365,15 @@ sandArea.onclick = async () => {
 async function showReward(){
 
     const result = getReward();
+
+    if (goldenDig > 0) {
+        result.shell *= 2;
+        goldenDig--;
+    }
+
+    if (luckyChance > 0) {
+        luckyChance--;
+    }
 
     rewardEmoji.textContent = result.emoji;
 
