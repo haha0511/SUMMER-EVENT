@@ -60,7 +60,6 @@ let lastLogin = "";
 
 let isDigging = false;
 
-let rewardList = [...rewards];
 
 // --------------------
 // 날짜
@@ -275,11 +274,12 @@ function getReward(){
     let total = 0;
 
     for (const item of rewardList) {
-        total += item.chance;
-    }
 
-    if (random <= total) {
-        return item;
+        total += item.chance;
+
+        if (random <= total) {
+            return item;
+        }
     }
 
     return rewardList[rewardList.length - 1];
@@ -287,22 +287,12 @@ function getReward(){
 }
 
 
-if(luckyChance > 0){
-
-    rewardList[0].chance += 2;
-    rewardList[1].chance += 2;
-    rewardList[2].chance += 6;
-
-}
 
 // --------------------
 // 게임 시작
 // --------------------
 
 loadUser();
-
-    goldenDig = data.goldenDig ?? 0;
-    luckyChance = data.luckyChance ?? 0;
 
 // --------------------
 // 모래 클릭
@@ -401,19 +391,6 @@ async function showReward(){
 
     });
 
-    if(goldenDig > 0){
-
-    result.shell *= 2;
-
-    goldenDig--;
-
-    }
-
-    if(luckyChance > 0){
-
-        luckyChance--;
-
-    }
 
     rewardScreen.classList.remove("hidden");
 
